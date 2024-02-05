@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 app.use('/feed', feedRoutes);
 mongoose
   .connect(
-    'mongodb+srv://takudzwamusinga:Takudzwa95@cluster0.jpfayga.mongodb.net/socialsphere?retryWrites=true&w=majority'
+    'mongodb+srv://takudzwamusinga:Takudzwa95@cluster0.jpfayga.mongodb.net/messages?retryWrites=true&w=majority'
   )
   .then((result) => {
     app.listen(8080);
