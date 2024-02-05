@@ -24,6 +24,14 @@ app.use((req, res, next) => {
 });
 
 app.use('/feed', feedRoutes);
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  res.status(status).json({ message: message });
+});
+
 mongoose
   .connect(
     'mongodb+srv://takudzwamusinga:Takudzwa95@cluster0.jpfayga.mongodb.net/messages?retryWrites=true&w=majority'
