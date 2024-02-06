@@ -5,13 +5,12 @@ const Post = require('../models/post');
 exports.getPosts = (req, res, next) => {
   Post.find()
     .then((posts) => {
-      res.status(200).json({
-        message: 'Fetched posts successfully',
-        posts: posts,
-      });
+      res
+        .status(200)
+        .json({ message: 'Fetched posts successfully.', posts: posts });
     })
     .catch((err) => {
-      if (err.statusCode) {
+      if (!err.statusCode) {
         err.statusCode = 500;
       }
       next(err);
@@ -30,7 +29,8 @@ exports.createPost = (req, res, next) => {
     error.statusCode = 422;
     throw error;
   }
-  const imageUrl = req.file.path;
+  const imageUrl = req.file.path.replace('\\', '/');
+  console.log(imageUrl);
   const title = req.body.title;
   const content = req.body.content;
   const post = new Post({
@@ -44,14 +44,13 @@ exports.createPost = (req, res, next) => {
   post
     .save()
     .then((result) => {
-      console.log(result);
       res.status(201).json({
         message: 'Post created successfully!',
         post: result,
       });
     })
     .catch((err) => {
-      if (err.statusCode) {
+      if (!err.statusCode) {
         err.statusCode = 500;
       }
       next(err);
@@ -70,7 +69,7 @@ exports.getPost = (req, res, next) => {
       res.status(200).json({ message: 'Post fetched.', post: post });
     })
     .catch((err) => {
-      if (err.statusCode) {
+      if (!err.statusCode) {
         err.statusCode = 500;
       }
       next(err);
