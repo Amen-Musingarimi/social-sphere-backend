@@ -130,6 +130,19 @@ exports.updatePost = (req, res, next) => {
 };
 
 const clearImage = (filePath) => {
-  filePath = path.join(__dirname, '..', filePath);
-  fs.unlink(filePath, (err) => console.log(err));
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // File doesn't exist, no need to delete
+      console.error(`File not found: ${filePath}`);
+      return;
+    }
+
+    fs.unlink(filePath, (unlinkErr) => {
+      if (unlinkErr) {
+        console.error(`Error deleting file: ${unlinkErr}`);
+        throw unlinkErr;
+      }
+      console.log(`Deleted file: ${filePath}`);
+    });
+  });
 };
