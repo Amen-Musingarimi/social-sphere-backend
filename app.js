@@ -67,7 +67,19 @@ mongoose
     'mongodb+srv://takudzwamusinga:Takudzwa95@cluster0.jpfayga.mongodb.net/messages?retryWrites=true&w=majority'
   )
   .then((result) => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    // const io = require('socket.io')(server);
+    const io = require('socket.io')(server, {
+      cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true,
+      },
+    });
+    -io.on('connection', (socket) => {
+      console.log('Client connected.');
+    });
   })
   .catch((err) => {
     console.log(err);
